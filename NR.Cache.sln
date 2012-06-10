@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NR.Cache", "NR.Cache\NR.Cache.csproj", "{4565FDA3-EC07-4289-AC91-6CCD66F99C01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NR.Cache.Tests", "NR.Cache.Tests\NR.Cache.Tests.csproj", "{2A4A8593-2155-4ABF-B832-3D5BC52BDF22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{4565FDA3-EC07-4289-AC91-6CCD66F99C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4565FDA3-EC07-4289-AC91-6CCD66F99C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4565FDA3-EC07-4289-AC91-6CCD66F99C01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A4A8593-2155-4ABF-B832-3D5BC52BDF22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A4A8593-2155-4ABF-B832-3D5BC52BDF22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A4A8593-2155-4ABF-B832-3D5BC52BDF22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A4A8593-2155-4ABF-B832-3D5BC52BDF22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

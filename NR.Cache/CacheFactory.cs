@@ -1,4 +1,5 @@
 ﻿using System;
+using NR.Cache.Dynamic;
 
 namespace NR.Cache
 {
@@ -9,7 +10,7 @@ namespace NR.Cache
         public CacheFactory()
         {
             // TODO: expose configuration of this building block
-            Builder = new Remoting.RemotingCacheBuilder();
+            Builder = new DynamicCacheBuilder();
         }
 
         public ICachingProxyConfiguration<T> CreateCachingProxy<T>() where T : class

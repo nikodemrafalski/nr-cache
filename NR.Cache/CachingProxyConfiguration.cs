@@ -14,10 +14,15 @@ namespace NR.Cache
             _builder = builder;
         }
 
-        private CachingProxyConfiguration(T instance, ICachingProxyBuilder builder)
+        internal CachingProxyConfiguration(T instance, ICachingProxyBuilder builder)
             : this(builder)
         {
             _instance = instance;
+        }
+
+        public T TargetObject
+        {
+            get { return _instance; }
         }
 
         public T Build()
