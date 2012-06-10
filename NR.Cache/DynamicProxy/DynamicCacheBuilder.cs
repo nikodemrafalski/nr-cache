@@ -11,13 +11,13 @@ namespace NR.Cache.Dynamic
     {
         public T BuildProxy<T>(ICachingProxyConfiguration<T> configuration) where T : class
         {
-            return new Emitter().BuildProxy<T>(configuration.TargetObject);
+            return new Emitter().BuildProxy<T>(configuration.TargetObject, new DummyInterceptor());
         }
     }
 
     public class Emitter
     {
-        public TProxy BuildProxy<TProxy>(TProxy targetObject)
+        public TProxy BuildProxy<TProxy>(TProxy targetObject, IInterceptor interceptor)
         {
             AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(
                 new AssemblyName("NRCacheGeneratedAssembly"),
@@ -26,23 +26,19 @@ namespace NR.Cache.Dynamic
             ModuleBuilder dynamicModule = assemblyBuilder.DefineDynamicModule("MainModule");
 
             Type proxyType = typeof(TProxy);
-            Type targetImplementationType = targetObject.GetType();
-
             TypeBuilder dynamicType = dynamicModule.DefineType(proxyType.Name + "_CachingProxy",
                                                                TypeAttributes.Public | TypeAttributes.Class);
             dynamicType.AddInterfaceImplementation(proxyType);
 
             FieldBuilder interceptorField = dynamicType.DefineField("_interceptor", typeof(IInterceptor), FieldAttributes.Private);
-            FieldBuilder targetObjectField = dynamicType.DefineField("_proxyTarget", targetImplementationType, FieldAttributes.Private);
+            FieldBuilder targetObjectField = dynamicType.DefineField("_proxyTarget", proxyType, FieldAttributes.Private);
 
             ConstructorInfo ctor = EmitProxyConstructor(dynamicType, interceptorField, targetObjectField);
 
             foreach (var interfaceMethod in CollectMethods(proxyType))
             {
 
-                var map = targetImplementationType.GetInterfaceMap(proxyType);
-                var index = Array.IndexOf(map.InterfaceMethods, interfaceMethod);
-                MethodInfo targetMethod = map.TargetMethods[index];
+                var methodParameters = interfaceMethod.GetParameters();
 
                 MethodBuilder dynamicMethod = dynamicType.DefineMethod(
                     interfaceMethod.Name,
@@ -54,12 +50,18 @@ namespace NR.Cache.Dynamic
                 ILGenerator il = dynamicMethod.GetILGenerator();
                 il.Emit(OpCodes.Ldarg_0);
                 il.Emit(OpCodes.Ldfld, targetObjectField);
-                il.Emit(OpCodes.Call, targetMethod);
+                for (int argIndex = 1; argIndex <= methodParameters.Length; argIndex++)
+                {
+                    il.Emit(OpCodes.Ldarg, argIndex);
+                }
+
+                il.Emit(OpCodes.Callvirt, interfaceMethod);
                 il.Emit(OpCodes.Ret);
             }
 
             var generatedType = dynamicType.CreateType();
-            var proxyInstance = Activator.CreateInstance(generatedType, new DummyInterceptor(), targetObject);
+            var proxyInstance = Activator.CreateInstance(generatedType, interceptor, targetObject);
+
             return (TProxy)proxyInstance;
         }
 
