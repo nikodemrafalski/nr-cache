@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace NR.Cache.Dynamic
+namespace NR.Cache.DynamicProxy
 {
     public interface IInterceptor
     {

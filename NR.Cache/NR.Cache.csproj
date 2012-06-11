@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NR.Cache</RootNamespace>
     <AssemblyName>NRCache</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -34,22 +34,18 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="CachingProxyConfiguration.cs" />
     <Compile Include="CacheFactory.cs" />
     <Compile Include="DynamicProxy\DummyInterceptor.cs" />
     <Compile Include="DynamicProxy\IInterceptor.cs" />
+    <Compile Include="DynamicProxy\IProxyWithTarget.cs" />
+    <Compile Include="DynamicProxy\ProxyFactory.cs" />
+    <Compile Include="DynamicProxy\ProxyWithTarget.cs" />
+    <Compile Include="DynamicProxy\ProxyWithTargetFactory.cs" />
     <Compile Include="ICachingProxyBuilder.cs" />
     <Compile Include="ICachingProxyConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DynamicProxy\DynamicCacheBuilder.cs" />
+    <Compile Include="DynamicCacheBuilder.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

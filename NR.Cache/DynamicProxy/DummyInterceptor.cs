@@ -1,4 +1,4 @@
-﻿namespace NR.Cache.Dynamic
+﻿namespace NR.Cache.DynamicProxy
 {
     public class DummyInterceptor : IInterceptor
     {

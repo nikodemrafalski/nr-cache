@@ -1,5 +1,3 @@
-using System.Diagnostics.Contracts;
-
 namespace NR.Cache
 {
     internal class CachingProxyConfiguration<T> : ICachingProxyConfiguration<T> where T : class
@@ -9,8 +7,6 @@ namespace NR.Cache
 
         public CachingProxyConfiguration(ICachingProxyBuilder builder)
         {
-            Contract.Assert(builder != null);
-
             _builder = builder;
         }
 
