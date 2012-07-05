@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace NR.Cache.DynamicProxy
 {
@@ -6,6 +7,6 @@ namespace NR.Cache.DynamicProxy
     {
         Type ProxyType{ get; }
 
-        T CreateInstance(T targetObject, IInterceptor interceptor);
+        T CreateInstance(T targetObject, IEnumerable<IInterceptor> interceptors);
     }
 }

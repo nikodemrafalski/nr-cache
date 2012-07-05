@@ -9,10 +9,14 @@ namespace NR.Cache.DynamicProxy
 
     public interface IInvocation
     {
-        MethodInfo Method { get; }
+        object Proxy { get; }
 
-        object[] Parameters { get; }
+        MethodInfo ProxiedMethod { get; }
 
-        void SetReturnValue(object returnValue);
+        object[] Arguments { get; }
+
+        object ReturnValue { get; set; }
+
+        void Continue();
     }
 }

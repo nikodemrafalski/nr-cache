@@ -36,8 +36,9 @@
   <ItemGroup>
     <Compile Include="CachingProxyConfiguration.cs" />
     <Compile Include="CacheFactory.cs" />
-    <Compile Include="DynamicProxy\DummyInterceptor.cs" />
+    <Compile Include="DynamicProxy\DynamicModuleStore.cs" />
     <Compile Include="DynamicProxy\IInterceptor.cs" />
+    <Compile Include="DynamicProxy\Invocation.cs" />
     <Compile Include="DynamicProxy\IProxyWithTarget.cs" />
     <Compile Include="DynamicProxy\ProxyFactory.cs" />
     <Compile Include="DynamicProxy\ProxyWithTarget.cs" />
@@ -47,7 +48,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DynamicCacheBuilder.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
