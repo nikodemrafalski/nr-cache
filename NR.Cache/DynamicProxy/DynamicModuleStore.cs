@@ -6,10 +6,10 @@ namespace NR.Cache.DynamicProxy
 {
     internal class DynamicModuleStore
     {
-        private static AssemblyBuilder _assembly;
-        private static ModuleBuilder _module;
+        private AssemblyBuilder _assembly;
+        private ModuleBuilder _module;
 
-        public static ModuleBuilder Module
+        public ModuleBuilder Module
         {
             get
             {
@@ -22,7 +22,7 @@ namespace NR.Cache.DynamicProxy
             }
         }
 
-        public static AssemblyBuilder Assembly
+        public AssemblyBuilder Assembly
         {
             get
             {
@@ -35,11 +35,11 @@ namespace NR.Cache.DynamicProxy
             }
         }
 
-        private static void Init()
+        private void Init()
         {
             _assembly = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("NR.DynamicAssembly"),
                                                                                 AssemblyBuilderAccess.Run);
-            _module = _assembly.DefineDynamicModule("MainModule");
+            _module = _assembly.DefineDynamicModule("NR.DynamicAssembly.dll");
         }
     }
 }

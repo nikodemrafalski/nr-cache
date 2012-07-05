@@ -10,16 +10,18 @@ namespace NR.Cache.DynamicProxy
     internal class ProxyWithTargetFactory
     {
         private readonly bool _cachingEnabled;
-        private readonly Dictionary<int, Type> _proxiesCache = new Dictionary<int, Type>();
+        private readonly DynamicModuleStore _dynamicModuleStore;
+        private readonly Dictionary<string, Type> _proxiesCache = new Dictionary<string, Type>();
 
-        public ProxyWithTargetFactory()
-            : this(false)
+        internal ProxyWithTargetFactory()
+            : this(true, new DynamicModuleStore())
         {
         }
 
-        public ProxyWithTargetFactory(bool cachingEnabled)
+        public ProxyWithTargetFactory(bool cachingEnabled, DynamicModuleStore dynamicModuleStore)
         {
             _cachingEnabled = cachingEnabled;
+            _dynamicModuleStore = dynamicModuleStore;
         }
 
         public IProxyWithTarget<T> CreateProxy<T>()
@@ -40,7 +42,7 @@ namespace NR.Cache.DynamicProxy
                 return new ProxyWithTarget<T>(EmitProxyType(interfaceType));
             }
 
-            int cacheKey = interfaceType.GetHashCode();
+            string cacheKey = interfaceType.FullName;
             Type proxyType;
             lock (typeof(ProxyWithTargetFactory))
             {
@@ -56,7 +58,7 @@ namespace NR.Cache.DynamicProxy
 
         private Type EmitProxyType(Type proxyInterface)
         {
-            TypeBuilder typeBuilder = DynamicModuleStore.Module.DefineType(proxyInterface.FullName + "_Proxy" + DateTime.Now.Ticks,
+            TypeBuilder typeBuilder = _dynamicModuleStore.Module.DefineType(proxyInterface.FullName + "_Proxy",
                 TypeAttributes.Public | TypeAttributes.Class);
             typeBuilder.AddInterfaceImplementation(proxyInterface);
 
@@ -212,8 +214,11 @@ namespace NR.Cache.DynamicProxy
 
         private Type EmitInvocationImpl(Type proxyInterface, MethodInfo proxiedMethod)
         {
-            TypeBuilder typeBuilder = DynamicModuleStore.Module.DefineType("InvocationImpl" + Guid.NewGuid().ToString("N"),
-                TypeAttributes.NotPublic | TypeAttributes.Class | TypeAttributes.BeforeFieldInit, typeof(Invocation));
+            string typeName = string.Format("Proxy_Invocation_{0}",  Guid.NewGuid().ToString("N"));
+
+            TypeBuilder typeBuilder = _dynamicModuleStore.Module.DefineType(typeName,
+                TypeAttributes.NotPublic | TypeAttributes.Class | TypeAttributes.BeforeFieldInit,
+                typeof(Invocation));
 
             FieldInfo targetField = typeBuilder.DefineField("_target", proxyInterface, FieldAttributes.Private);
 

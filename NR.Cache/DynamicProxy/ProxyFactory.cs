@@ -4,10 +4,12 @@ namespace NR.Cache.DynamicProxy
     {
         private static ProxyFactory _instance;
         private readonly ProxyWithTargetFactory _proxyWithTargetFactory;
+        private readonly DynamicModuleStore _dynamicModuleStore = new DynamicModuleStore();
        
-        private ProxyFactory(ProxyWithTargetFactory proxyWithTargetFactory)
+        private ProxyFactory()
         {
-            _proxyWithTargetFactory = proxyWithTargetFactory;
+            _dynamicModuleStore = new DynamicModuleStore();
+            _proxyWithTargetFactory = new ProxyWithTargetFactory(true, _dynamicModuleStore);
         }
 
         public IProxyWithTarget<T> CreateProxyWithTarget<T>()
@@ -21,7 +23,7 @@ namespace NR.Cache.DynamicProxy
             {
                 if (_instance == null)
                 {
-                    _instance = new ProxyFactory(new ProxyWithTargetFactory());
+                    _instance = new ProxyFactory();
                 }
 
                 return _instance;
